@@ -26,14 +26,6 @@ function enableSpots(spotArray) {
   })
 }
 
-// function checkMate() {
-//   var opponentKingColor = if turn == 'White' ? 'bking' : 'wking';
-//   var opponentKingfoo = $("[color='" + turn + "']")
-//   $(foo).each(function(element) {
-//     calculateSpots(foo[element]);
-//   })
-// }
-
 function setColor() {
   $('.square').css('background-color', 'white');
   $('.row:even .square:odd').css('background-color', 'rgb(27, 180, 162)');
@@ -51,6 +43,18 @@ function drop(ev) {
   disableSpots();
 }
 
+function checkMate() {
+  var currentPlayerPieces = $("[color='" + turn + "']")
+  var opponentKing = turn == 'White' ? $('#bking') : $('#king');
+  var opponentKingLocation = parseInt($(opponentKing).parent().attr('id'));
+  $(currentPlayerPieces).each(function(element) {
+    var pieceSpots = calculateSpots(currentPlayerPieces[element])
+    if (pieceSpots.indexOf(opponentKingLocation) != -1) {
+      return alert("Check");
+    }
+  })
+}
+
 function disableSpots() {
   $('[ondrop]').removeAttr('ondrop');
   $('[ondragover]').removeAttr('ondragover');
@@ -63,24 +67,29 @@ function capturePiece(ev) {
     var foo = $(ev.toElement).children().first();
     $(ev.toElement).parent().append(foo);
     ev.toElement.remove();
+    if (ev.toElement.className == 'king') {
+      alert("GAME OVER");
+      $('body').fadeOut(3000);
+    }
     $('.funny').html("<div id='turn'>" + turn + "'s Turn</div><img style='display: none;' id='meme' width='600' height='700' src='" + item + "'>");
     $('#meme').fadeIn(500);
     $('#meme').fadeOut(4000);
+
   }
 }
 
 function switchTurn() {
   if(turn == 'White') {
-    $('[color=white]').removeAttr('draggable'); 
-    $('[color=white]').removeAttr('ondragstart');
-    $('[color=black]').attr('draggable', 'true');
-    $('[color=black]').attr('ondragstart', 'drag(event)');
+    $('[color=White]').removeAttr('draggable'); 
+    $('[color=White]').removeAttr('ondragstart');
+    $('[color=Black]').attr('draggable', 'true');
+    $('[color=Black]').attr('ondragstart', 'drag(event)');
     turn = 'Black';
   } else {
-    $('[color=black]').removeAttr('draggable'); 
-    $('[color=black]').removeAttr('ondragstart');
-    $('[color=white]').attr('draggable', 'true');
-    $('[color=white]').attr('ondragstart', 'drag(event)');
+    $('[color=Black]').removeAttr('draggable'); 
+    $('[color=Black]').removeAttr('ondragstart');
+    $('[color=White]').attr('draggable', 'true');
+    $('[color=White]').attr('ondragstart', 'drag(event)');
     turn = 'White';
   }
   $('#turn').text(turn + "'s Turn");
@@ -90,8 +99,8 @@ function calculateSpots(piece) {
   var location = parseInt($(piece).parent().attr('id'));
   var type     = $(piece).attr('class');
   var color    = $(piece).attr('color');
+
   if(type == 'pawn') {
-    console.log(pawnSpots(location, color));
     return pawnSpots(location, color);
   } else if (type == 'rook') {
     return rookSpots(location, color);
@@ -132,7 +141,7 @@ function knightSpots(num, color) {
 
 function pawnSpots(num, color) {
   var spotsArray = []
-  if (color == 'white') {
+  if (color == 'White') {
     if(num < 57 && num > 48) {
       if($('#'+(num-16)).children().size() != 0) {
         spotsArray.push(num-8);
@@ -259,11 +268,11 @@ function findClosest(array, num) {
 }
 
 function addPawnKill(location, color, spotsArray) {
-  var whiteL = $('#'+(location-9)).children().first().attr('color') == 'black'
-  var whiteR = $('#'+(location-7)).children().first().attr('color') == 'black'
-  var blackR = $('#'+(location+9)).children().first().attr('color') == 'white'
-  var blackL = $('#'+(location+7)).children().first().attr('color') == 'white'
-  if(color == 'white') {
+  var whiteL = $('#'+(location-9)).children().first().attr('color') == 'Black'
+  var whiteR = $('#'+(location-7)).children().first().attr('color') == 'Black'
+  var blackR = $('#'+(location+9)).children().first().attr('color') == 'White'
+  var blackL = $('#'+(location+7)).children().first().attr('color') == 'White'
+  if(color == 'White') {
     if(whiteL == true && leftEdge.indexOf(location) == -1) {spotsArray.push(location-9)}
     if(whiteR == true && rightEdge.indexOf(location) == -1 ) {spotsArray.push(location-7)}
     return spotsArray;
