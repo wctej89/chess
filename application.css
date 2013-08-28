@@ -1,7 +1,7 @@
 .board {
   text-align: center;
-  font-size: 75px;
-  width: 808px;
+  font-size: 70px;
+  width: 728px;
   border: 1px solid black;
   display: inline-block;
 }
@@ -9,11 +9,11 @@
 .funny {
   float:right;
   height: 700px;
-  width: 600px;
+  width: 505px;
 }
 .square {
-  width: 101px;
-  height: 95px;
+  width: 91px;
+  height: 87px;
   float: left;
 }
 

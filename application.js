@@ -71,7 +71,7 @@ function capturePiece(ev) {
       alert("GAME OVER");
       $('body').fadeOut(3000);
     }
-    $('.funny').html("<div id='turn'>" + turn + "'s Turn</div><img style='display: none;' id='meme' width='600' height='700' src='" + item + "'>");
+    $('.funny').html("<div id='turn'>" + turn + "'s Turn</div><img style='display: none;' id='meme' width='475' height='700' src='" + item + "'>");
     $('#meme').fadeIn(500);
     $('#meme').fadeOut(4000);
 
